@@ -11,12 +11,23 @@ namespace jwLogbook
 
             // Add services to the container.
             builder.Services.AddAuthorization();
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            app.UseCors();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -47,9 +58,58 @@ namespace jwLogbook
                 return Results.Ok(aircraft);
             });
 
+            app.MapPut("API/addaircraft", async (string reg, string model, string type) =>
+            {
+                LogbookDbContext context = new LogbookDbContext();
+
+                AircraftModel newAc = new AircraftModel() {
+                    Registration = reg,
+                    Model = model,
+                    ICAOType = type
+                };
+
+                context.Add(newAc);
+                context.SaveChanges();
 
 
-            app.Run();
+                var aircraft = context.Aircraft.ToList();
+
+                return Results.Ok(aircraft);
+            });
+
+            app.MapPut("API/addlog", async (int userId, int acId, string depAp, string arrAp, DateTime depUTC, DateTime arrUTC) =>
+            {
+                LogbookDbContext context = new LogbookDbContext();
+
+                FlightModel newFlight = new FlightModel()
+                {
+                    UserID = userId,
+                    AircraftID = acId,
+                    DepartureAirport = depAp,
+                    ArrivalAirport = arrAp,
+                    DepartureTime= depUTC,
+                    ArrivalTime= arrUTC
+                };
+
+                TimeSpan duration = arrUTC - depUTC;
+                decimal decDur = Math.Round((decimal)duration.TotalHours,2);
+
+                newFlight.Duration = decDur;
+
+                context.Add(newFlight);
+                context.SaveChanges();
+
+
+                var logs = context.FlightLogs.ToList();
+
+                return Results.Ok(logs);
+
+
+            });
+
+
+
+                app.Run();
         }
     }
 }
