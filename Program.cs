@@ -1,4 +1,5 @@
 global using jwLogbook.connects;
+using jwLogbook.models;
 
 namespace jwLogbook
 {
@@ -28,24 +29,25 @@ namespace jwLogbook
 
             app.UseAuthorization();
 
-            var summaries = new[]
+            app.MapGet("API/users", async () =>
             {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+                LogbookDbContext context = new LogbookDbContext();
 
-            app.MapGet("/weatherforecast", (HttpContext httpContext) =>
+                var users = context.Pilots.ToList();
+
+                return Results.Ok(users);
+            });
+
+            app.MapGet("API/aircraft", async () =>
             {
-                var forecast = Enumerable.Range(1, 5).Select(index =>
-                    new WeatherForecast
-                    {
-                        Date = DateTime.Now.AddDays(index),
-                        TemperatureC = Random.Shared.Next(-20, 55),
-                        Summary = summaries[Random.Shared.Next(summaries.Length)]
-                    })
-                    .ToArray();
-                return forecast;
-            })
-            .WithName("GetWeatherForecast");
+                LogbookDbContext context = new LogbookDbContext();
+
+                var aircraft = context.Aircraft.ToList();
+
+                return Results.Ok(aircraft);
+            });
+
+
 
             app.Run();
         }

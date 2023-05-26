@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace jwLogbook.models
 {
@@ -15,6 +16,18 @@ namespace jwLogbook.models
         public DateTime DepartureTime { get; set; }
         public DateTime ArrivalTime { get; set; }
         public decimal Duration { get; set; }
+
+        [AllowNull]
+        public decimal PIC { get; set; }
+        [AllowNull]
+        public decimal Night { get; set; }
+
+        [AllowNull]
+        public int LandingsDay { get; set; }
+        [AllowNull]
+        public int LandingsNight { get; set; }
+
+
 
         [ForeignKey("UserID")]
         public UserModel User { get; set; }
