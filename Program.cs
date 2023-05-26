@@ -1,3 +1,5 @@
+global using jwLogbook.connects;
+
 namespace jwLogbook
 {
     public class Program
