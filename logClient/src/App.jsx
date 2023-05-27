@@ -5,22 +5,25 @@ import viteLogo from '/vite.svg'
 import axios from 'axios';
 
 import './App.css'
+import Logs from './Logs';
 
 function App() {
-  const [ac, setAc] = useState([]);
+  // const [ac, setAc] = useState([]);
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    axios.get('https://localhost:7269/API/aircraft')
-    .then((res) => {
-      // console.log(res.data)
-      setAc(res.data)
-    });
-  }, []);
+  //   axios.get('https://localhost:7269/API/aircraft')
+  //   .then((res) => {
+  //     // console.log(res.data)
+  //     setAc(res.data)
+  //   });
+  // }, []);
 
   return (
     <>
-    {
+    <Logs></Logs>
+
+    {/* {
       ac.map(aircraft => (
 
         <div key={aircraft.acID}>
@@ -32,7 +35,8 @@ function App() {
 
       ))
 
-    }
+    } */}
+
     </>
   )
 }
