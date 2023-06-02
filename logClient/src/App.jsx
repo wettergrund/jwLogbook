@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 
 import axios from 'axios';
 
-import './App.css'
+// import './App.css'
 import Logs from './Logs';
 
 function App() {

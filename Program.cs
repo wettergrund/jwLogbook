@@ -58,13 +58,22 @@ namespace jwLogbook
                 return Results.Ok(aircraft);
             });
 
-            app.MapGet("API/logbyuser", async (int id) =>
+            app.MapGet("API/logbyuser", async (int id, int? number) =>
             {
                 LogbookDbContext context = new LogbookDbContext();
 
                 var log = context.FlightLogs.Where(u => u.UserID == id).ToList();
+                if (number.HasValue)
+                {
+                    var sliced = log.OrderBy(i => i.DepartureTime).TakeLast(number.Value);
+                    return Results.Ok(sliced);
 
-                return Results.Ok(log);
+                }
+                else
+                {
+                    return Results.Ok(log);
+
+                }
             });
 
             app.MapPut("API/addaircraft", async (string reg, string model, string type) =>

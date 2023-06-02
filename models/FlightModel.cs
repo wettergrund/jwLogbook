@@ -26,6 +26,7 @@ namespace jwLogbook.models
         public int LandingsDay { get; set; }
         [AllowNull]
         public int LandingsNight { get; set; }
+        public int Landings { get; set; }
 
 
 
