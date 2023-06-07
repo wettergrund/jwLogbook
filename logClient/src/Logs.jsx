@@ -11,12 +11,16 @@ import axios from 'axios';
 
 
 const Logs = () => {
-    const today = new Date(); // Get the current date
+
+  const currency = new Date();
+  currency.setDate(currency.getDate() - 90);
+
+
     const [pageIndex, setPageIndex] = useState(0);
     const [data, setData] = useState([]);
 
     useEffect(() => {
-      axios.get('https://localhost:7269/API/logbyuser?id=1&number=20')
+      axios.get('https://localhost:7269/API/logbyuser?id=1')
       .then((res) => {
       console.log(res.data)
       setData(res.data)
@@ -41,31 +45,6 @@ const Logs = () => {
     });
 
 
-    const returnDiff = (flight) =>{
-
-      {console.log(flight)}
-      const flightDate = new Date(flight.departureTime); // Convert flight date string to Date object
-      {console.log(flightDate)}
-      const differenceInTime = flightDate.getTime() - today.getTime(); // Calculate the time difference in milliseconds
-      {console.log(differenceInTime)}
-      const differenceInDays = differenceInTime / (1000 * 3600 * 24); // Convert milliseconds to days
-      {console.log(differenceInDays)}
-
-      return differenceInDays >= 0 && differenceInDays <= 90; // Return true if flight date is within 90 days
-
-
-
-    };
-
-
-    const filteredFlights = data.filter((flight) => {
-      const flightDate = new Date(flight.departureTime); // Convert flight date string to Date object
-      const differenceInTime = flightDate.getTime() - today.getTime(); // Calculate the time difference in milliseconds
-      const differenceInDays = differenceInTime / (1000 * 3600 * 24); // Convert milliseconds to days
-  
-      return differenceInDays >= 0 && differenceInDays <= 90; // Return true if flight date is within 90 days
-    });
-  
     
 
 
@@ -118,19 +97,34 @@ const Logs = () => {
                 switch (column.key){
                   case 'duration': return (
                     <>
-                      <b>Sum: {data.reduce((acc, o) => acc + o.duration, 0)}</b>
+                      <b>Sum: {Math.round(data.reduce((acc, o) => acc + o.duration, 0) * 10 ) / 10}0</b>
                     </>
                   );
                   case 'landings': return (
                     <>
-                      <b>Total: {data.reduce((acc, o) => acc + o.landings, 0)} </b>
-                      {/* <b>Total: {
+                      <b>Total {data.reduce((acc, o) => acc + o.landings, 0)}</b> 
+                      {/* <br/>
+                      <b>{
+                        data.reduce((acc, o) => {
+                          const arrivalTime = new Date(o.arrivalTime);
+                          let currencyCheck = 0;
+                          
+                          if (arrivalTime >= currency) {
+                            currencyCheck = acc + o.landings;
+                            if(currencyCheck < 3){
+                              return <p className='notCurrent'>Not current {currencyCheck} </p>
+                            }
+                            else{
+
+                              return <p className='isCurrent'>Current {currencyCheck} </p>;
+                            }
+                          }
+                          return currencyCheck ;
+                        }, 0)
+                        } 
+                        
+                        </b> */}
                       
-                      
-                      data.filter((o) => returnDiff(o)).length
-                      
-                      
-                      } </b> */}
 
                     </>
                   );
