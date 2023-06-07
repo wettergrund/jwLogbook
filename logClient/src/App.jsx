@@ -6,6 +6,7 @@ import axios from 'axios';
 
 // import './App.css'
 import Logs from './Logs';
+import LogForm from './LogForm';
 
 function App() {
   // const [ac, setAc] = useState([]);
@@ -21,6 +22,7 @@ function App() {
 
   return (
     <>
+    <LogForm></LogForm>
     <Logs></Logs>
 
     {/* {
