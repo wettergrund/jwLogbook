@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 
+import axios from 'axios';
 
 // - aircraft
 // - dep
@@ -10,6 +11,8 @@ import "react-datepicker/dist/react-datepicker.css";
 // - block on
 
 const LogForm = () => {
+
+  const [ac, setAc] = useState([]);
 
   const [aircraft, setAircraft] = useState(0)
   const [dep, setDep] = useState("From")
@@ -34,7 +37,18 @@ const LogForm = () => {
     setDiff(getDiff(start, end));
     
   }, [end]);
+  
 
+  useEffect(() => {
+    axios.get('https://localhost:7269/API/aircraft')
+    .then((res) => {
+    console.log(res.data)
+    setAc(res.data)
+
+  
+  })
+    
+  }, []);
 
   return (
 
@@ -67,17 +81,35 @@ const LogForm = () => {
           timeCaption="time"
           dateFormat="yyyy-MM-dd HH:mm"
         /><br/>
+        <select onChange={e => setAircraft(e.target.value)}>
+          {
+            ac.map((option) => (
+              <option key={option.acID} value={option.acID}>
+                {option.registration}
+              </option>
+
+            )
+            )
+
+          }
+        </select>
+
+     
   
 
             
+
   
 
 
         <p>{dep} {start.toLocaleString('sv', options)}</p>
         <p>{arr} {end.toLocaleString('sv', options)}</p>
         <p>{diff}</p>
+        <p>{aircraft}</p>
+
  
     </form>
+
     </>
 
     
