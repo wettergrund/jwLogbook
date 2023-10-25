@@ -7,7 +7,7 @@ namespace jwLogbook.models
     public class AircraftModel
     {
         [Key]
-        public int AcID { get; set; }
+        public string AcID { get; set; }
 
         [MaxLength(25)]
         [Required]

@@ -50,6 +50,17 @@ const LogForm = () => {
     
   }, []);
 
+
+  const addLog = (event) =>{
+    event.preventDefault();
+    console.log("Click!")
+    // axios.post(`https://localhost:7269/API/addlog?userId=1&acId=${aircraft}&depAp=${dep}&arrAp=${arr}&depUTC=${(start.toLocaleString('sv', options))}&arrUTC=${(end.toLocaleString('sv', options))}`
+    //     );
+        axios.post(`https://localhost:7269/API/addlog?userId=1&acId=1&depAp=ESSA&arrAp=ESSA&depUTC=2023-06-07%2021%3A52&arrUTC=2023-06-07%2022%3A52`
+        );
+      }
+
+
   return (
 
     <>
@@ -93,6 +104,8 @@ const LogForm = () => {
 
           }
         </select>
+
+        <button onClick={addLog}>Hej</button>
 
      
   

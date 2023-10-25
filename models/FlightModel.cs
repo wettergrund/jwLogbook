@@ -7,9 +7,9 @@ namespace jwLogbook.models
     public class FlightModel
     {
         [Key]
-        public int FlightID { get; set; }
-        public int UserID { get; set; }
-        public int AircraftID { get; set; }
+        public string FlightID { get; set; }
+        public string UserID { get; set; }
+        public string AircraftID { get; set; }
 
         public string DepartureAirport { get; set; }
         public string ArrivalAirport { get; set; }
